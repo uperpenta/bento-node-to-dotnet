@@ -1,0 +1,7 @@
+﻿services:
+  bento-node-to-dotnet:
+    image: bento-node-to-dotnet
+    build:
+      context: .
+      dockerfile: bento-node-to-dotnet/Dockerfile
+
