@@ -4,4 +4,27 @@
     build:
       context: .
       dockerfile: bento-node-to-dotnet/Dockerfile
+    environment:
+      - ConnectionStrings__Default=Host=postgres;Database=mydb;Username=postgres;Password=secret
+    depends_on:
+      postgres:
+        condition: service_healthy
 
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
